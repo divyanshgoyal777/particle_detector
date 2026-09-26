@@ -1,11 +1,12 @@
 const r = require("raylib");
 
-const WIDTH = 1000;
-const HEIGHT = 600;
+const WIDTH = 800;
+const HEIGHT = 400;
 const FPS = 60;
 
 const sWidth = 50;
-const sSpeed = 1.5;
+const sSpeed = 2;
+let color = r.WHITE;
 let sX = 0;
 let movingBackward = false;
 
@@ -32,13 +33,20 @@ function moveScanner(sX, WIDTH, sSpeed, sWidth) {
     return sX;
 }
 
-function update() {
-    sX = moveScanner(sX, WIDTH, sSpeed, sWidth)
-    drawScanner(sX, 0, sWidth, HEIGHT)
+function detectOverlap(sX, sWidth, pfStart, pfWidth) {
+    const overlapStart = sX >= pfStart - sWidth
+    const overlapEnd = sX <= pfStart + pfWidth
+    return overlapStart && overlapEnd ? r.RED : r.WHITE;
 }
 
-function drawScanner(sX, sY, sWidth, sHeight) {
-    r.DrawRectangle(sX, sY, sWidth, sHeight, r.WHITE);
+function update() {
+    sX = moveScanner(sX, WIDTH, sSpeed, sWidth)
+    color = detectOverlap(sX, sWidth, pfStart, pfWidth);
+    drawScanner(sX, 0, sWidth, HEIGHT, color)
+}
+
+function drawScanner(sX, sY, sWidth, sHeight, color) {
+    r.DrawRectangle(sX, sY, sWidth, sHeight, color);
 }
 
 function drawParticleField(pfX, pfY, pfWidth, pfHeight) {
@@ -49,7 +57,7 @@ function draw() {
     r.BeginDrawing()
     r.ClearBackground(r.BLACK);
     drawParticleField(pfStart, 0, pfWidth, HEIGHT)
-    drawScanner(sX, 0, sWidth, HEIGHT);
+    drawScanner(sX, 0, sWidth, HEIGHT, color);
     r.EndDrawing()
 }
 
