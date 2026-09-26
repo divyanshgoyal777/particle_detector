@@ -1,32 +1,19 @@
-function moveScanner(sX, minX, maxX, sSpeed, sWidth, movingReverse) {
-    if (!movingReverse) {
-        sX = sX + sSpeed;
-        if (sX + sWidth >= maxX) {
-            sX = maxX - sWidth;
-        }
-    } else {
-        sX = sX - sSpeed;
-        if (sX <= minX) {
-            sX = minX
-        }
-    }
-    return sX;
+function isBoundaryTouch(scannerX, scannerWidth, startPos, endPos) {
+    return (scannerX + scannerWidth >= endPos) || (scannerX === startPos);
 }
 
-function detectOverlap(sX, sWidth, pfStart, pfWidth) {
-    const overlapStart = sX >= pfStart - sWidth
-    const overlapEnd = sX <= pfStart + pfWidth
-    return overlapStart && overlapEnd ? true : false;
+function detectOverlap(scannerX, scannerWidth, particleStart, particleWidth) {
+    return (scannerX >= particleStart - scannerWidth) && (scannerX <= particleStart + particleWidth) ? true : false;
 }
 
-function checkDetectsParticle(sStart, sWidth, pf1Start, pf1Width, pf2Start, pf2Width) {
-    const sOverlapsPf1 = detectOverlap(sStart, sWidth, pf1Start, pf1Width);
-    const sOverlapsPf2 = detectOverlap(sStart, sWidth, pf2Start, pf2Width);
-    return sOverlapsPf1 || sOverlapsPf2;
+function detectParticle(scannerX, scannerWidth, particle1Start, particle1Width, particle2Start, particle2Width) {
+    const overlap1 = detectOverlap(scannerX, scannerWidth, particle1Start, particle1Width);
+    const overlap2 = detectOverlap(scannerX, scannerWidth, particle2Start, particle2Width);
+    return overlap1 || overlap2;
 }
 
 module.exports = {
-    moveScanner,
+    isBoundaryTouch,
     detectOverlap,
-    checkDetectsParticle,
+    detectParticle,
 };
