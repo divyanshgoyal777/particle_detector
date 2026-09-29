@@ -3,10 +3,10 @@ const w = require("./screen")
 const width = 40;
 let velocity = 4;
 let start = w.WIDTH / 2;
-let color;
+let hasDetected;
 const height = w.HEIGHT;
 const end = w.WIDTH;
 
 module.exports = {
-    width, velocity, start, color, height, end
+    width, velocity, start, hasDetected, height, end
 }
