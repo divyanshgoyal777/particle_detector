@@ -1,14 +1,60 @@
 const r = require("raylib");
 const g = require("./geometry");
-const screen = require("./screen");
 
-const s1 = require("./s1");
-const s2 = require("./s2");
-const s3 = require("./s3");
+const screen = {
+    WIDTH: 800,
+    HEIGHT: 500,
+    TITLE: "Particle Detector",
+    FPS: 60,
+}
 
-const p1 = require("./p1");
-const p2 = require("./p2");
-const p3 = require("./p3");
+const scanners = {
+    s1: {
+        width: 40,
+        velocity: 2,
+        x: 0,
+        start: 0,
+        end: screen.WIDTH / 2,
+        hasDetected: false,
+        height: screen.HEIGHT,
+    },
+    s2: {
+        width: 40,
+        velocity: 4,
+        x: screen.WIDTH / 2,
+        start: screen.WIDTH / 2,
+        end: screen.WIDTH,
+        hasDetected: false,
+        height: screen.HEIGHT,
+    },
+    s3: {
+        height: 40,
+        velocity: 3,
+        y: 0,
+        start: 0,
+        end: screen.HEIGHT,
+        hasDetected: false,
+        width: screen.WIDTH,
+    }
+}
+
+const particles = {
+    p1: {
+        start: 300,
+        width: 100,
+        height: screen.HEIGHT,
+    },
+    p2: {
+        start: 500,
+        width: 10,
+        height: screen.HEIGHT,
+    },
+    p3: {
+        start: 200,
+        width: screen.WIDTH,
+        height: 30,
+    }
+}
 
 function running() {
     return !r.WindowShouldClose();
@@ -20,41 +66,53 @@ function setup() {
     r.SetTargetFPS(screen.FPS)
 }
 
-function drawScanner(x, y, width, height, hasDetected) {
-    hasDetected
-        ? r.DrawRectangle(x, y, width, height, r.ColorAlpha(r.RED, 0.8))
-        : r.DrawRectangle(x, y, width, height, r.WHITE)
+function updateHorizontalScanner(s, p1, p2) {
+    s.x += s.velocity;
+    s.velocity = g.changeDirection(s.x, s.width, s.start, s.end, s.velocity);
+    s.hasDetected = g.isOverlapingParticles(s.x, s.width, p1.start, p1.width, p2.start, p2.width);
 }
 
-function drawParticle(x, y, width, height, color) {
-    r.DrawRectangle(x, y, width, height, color);
+function updateVerticalScanner(s, p3) {
+    s.y += s.velocity;
+    s.velocity = g.changeDirection(s.y, s.height, s.start, s.end, s.velocity);
+    s.hasDetected = g.detectOverlap(s.y, s.height, p3.start, p3.height);
 }
 
 function update() {
-    s1.start += s1.velocity;
-    s2.start += s2.velocity;
-    s3.start += s3.velocity;
+    updateHorizontalScanner(scanners.s1, particles.p1, particles.p2);
+    updateHorizontalScanner(scanners.s2, particles.p1, particles.p2);
+    updateVerticalScanner(scanners.s3, particles.p3);
+}
 
-    s1.velocity = g.changeDirection(s1.start, s1.width, 0, s1.end, s1.velocity);
-    s2.velocity = g.changeDirection(s2.start, s2.width, screen.WIDTH / 2, s2.end, s2.velocity);
-    s3.velocity = g.changeDirection(s3.start, s3.height, 0, s3.end, s3.velocity);
+function drawVerticalParticle(p) {
+    r.DrawRectangle(p.start, 0, p.width, p.height, r.SKYBLUE);
+}
 
-    s1.hasDetected = g.isOverlapingParticles(s1.start, s1.width, p1.start, p1.width, p2.start, p2.width)
-    s2.hasDetected = g.isOverlapingParticles(s2.start, s2.width, p1.start, p1.width, p2.start, p2.width)
-    s3.hasDetected = g.detectOverlap(s3.start, s3.height, p3.start, p3.height);
+function drawHorizontalParticle(p) {
+    r.DrawRectangle(0, p.start, p.width, p.height, r.SKYBLUE);
+}
+
+function drawVerticalScanner(s) {
+    const color = s.hasDetected ? r.ColorAlpha(r.RED, 0.8) : r.WHITE;
+    r.DrawRectangle(0, s.y, s.width, s.height, color);
+}
+
+function drawHorizontalScanner(s) {
+    const color = s.hasDetected ? r.ColorAlpha(r.RED, 0.8) : r.WHITE;
+    r.DrawRectangle(s.x, 0, s.width, s.height, color);
 }
 
 function draw() {
     r.BeginDrawing()
     r.ClearBackground(r.BLACK);
 
-    drawParticle(p1.start, 0, p1.width, p1.height, r.SKYBLUE);
-    drawParticle(p2.start, 0, p2.width, p2.height, r.SKYBLUE);
-    drawParticle(0, p3.start, p3.width, p3.height, r.SKYBLUE);
+    drawVerticalParticle(particles.p1);
+    drawVerticalParticle(particles.p2);
+    drawHorizontalParticle(particles.p3);
 
-    drawScanner(s1.start, 0, s1.width, s1.height, s1.hasDetected);
-    drawScanner(s2.start, 0, s2.width, s2.height, s2.hasDetected);
-    drawScanner(0, s3.start, s3.width, s3.height, s3.hasDetected);
+    drawHorizontalScanner(scanners.s1);
+    drawHorizontalScanner(scanners.s2);
+    drawVerticalScanner(scanners.s3);
 
     r.EndDrawing()
 }

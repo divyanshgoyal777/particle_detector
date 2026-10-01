@@ -1,11 +1,10 @@
-const WIDTH = 800;
-const HEIGHT = 500;
-const TITLE = "Particle Detector"
-const FPS = 60;
+const screen = {
+    WIDTH: 800,
+    HEIGHT: 500,
+    TITLE: "Particle Detector",
+    FPS: 60,
+}
 
 module.exports = {
-    WIDTH,
-    HEIGHT,
-    TITLE,
-    FPS
+    screen,
 }
