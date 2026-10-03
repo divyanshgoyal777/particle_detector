@@ -1,23 +1,12 @@
 const r = require("raylib");
 const g = require("./geometry");
 
-function createHorizontalScanner(width, velocity, x, start, end, hasDetected, height) {
+function createScanner(x, y, width, velocity, start, end, hasDetected, height) {
     return {
-        width,
-        velocity,
         x,
-        start,
-        end,
-        hasDetected,
-        height,
-    }
-}
-
-function createVerticalScanner(width, velocity, y, start, end, hasDetected, height) {
-    return {
+        y,
         width,
         velocity,
-        y,
         start,
         end,
         hasDetected,
@@ -25,14 +14,9 @@ function createVerticalScanner(width, velocity, y, start, end, hasDetected, heig
     }
 }
 
-function drawVerticalScanner(s) {
+function drawScanner(s) {
     const color = s.hasDetected ? r.ColorAlpha(r.RED, 0.8) : r.WHITE;
-    r.DrawRectangle(0, s.y, s.width, s.height, color);
-}
-
-function drawHorizontalScanner(s) {
-    const color = s.hasDetected ? r.ColorAlpha(r.RED, 0.8) : r.WHITE;
-    r.DrawRectangle(s.x, 0, s.width, s.height, color);
+    r.DrawRectangle(s.x, s.y, s.width, s.height, color);
 }
 
 function updateHorizontalScanner(s, p1, p2) {
@@ -48,10 +32,8 @@ function updateVerticalScanner(s, p3) {
 }
 
 module.exports = {
-    createHorizontalScanner,
-    createVerticalScanner,
-    drawVerticalScanner,
-    drawHorizontalScanner,
+    createScanner,
+    drawScanner,
     updateHorizontalScanner,
     updateVerticalScanner,
 }

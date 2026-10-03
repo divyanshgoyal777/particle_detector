@@ -18,13 +18,13 @@ function setup() {
     r.InitWindow(world.WIDTH, world.HEIGHT, world.TITLE);
     r.SetTargetFPS(world.FPS)
 
-    world.s1 = s.createHorizontalScanner(40, 2, 0, 0, world.WIDTH / 2, false, world.HEIGHT);
-    world.s2 = s.createHorizontalScanner(40, 4, world.WIDTH / 2, world.WIDTH / 2, world.WIDTH, false, world.HEIGHT);
-    world.s3 = s.createVerticalScanner(world.WIDTH, 3, 0, 0, world.HEIGHT, false, 40);
+    world.s1 = s.createScanner(0, 0, 40, 2, 0, world.WIDTH / 2, false, world.HEIGHT);
+    world.s2 = s.createScanner(world.WIDTH / 2, 0, 40, 4, world.WIDTH / 2, world.WIDTH, false, world.HEIGHT);
+    world.s3 = s.createScanner(0, 0, world.WIDTH, 3, 0, world.HEIGHT, false, 40);
 
-    world.p1 = p.createHorizontalParticle(300, 100, world.HEIGHT);
-    world.p2 = p.createHorizontalParticle(500, 10, world.HEIGHT);
-    world.p3 = p.createVerticalParticle(200, world.WIDTH, 30);
+    world.p1 = p.createParticle(300, 100, world.HEIGHT);
+    world.p2 = p.createParticle(500, 10, world.HEIGHT);
+    world.p3 = p.createParticle(200, world.WIDTH, 30);
 
     return world;
 }
@@ -43,9 +43,9 @@ function draw(world) {
     p.drawVerticalParticle(world.p2);
     p.drawHorizontalParticle(world.p3);
 
-    s.drawHorizontalScanner(world.s1);
-    s.drawHorizontalScanner(world.s2);
-    s.drawVerticalScanner(world.s3);
+    s.drawScanner(world.s1);
+    s.drawScanner(world.s2);
+    s.drawScanner(world.s3);
 
     r.EndDrawing()
 }

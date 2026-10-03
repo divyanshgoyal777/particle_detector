@@ -1,14 +1,6 @@
 const r = require("raylib");
 
-function createHorizontalParticle(start, width, height) {
-    return {
-        start,
-        width,
-        height,
-    }
-}
-
-function createVerticalParticle(start, width, height) {
+function createParticle(start, width, height) {
     return {
         start,
         width,
@@ -25,8 +17,7 @@ function drawHorizontalParticle(p) {
 }
 
 module.exports = {
-    createHorizontalParticle,
-    createVerticalParticle,
+    createParticle,
     drawVerticalParticle,
     drawHorizontalParticle,
 }
