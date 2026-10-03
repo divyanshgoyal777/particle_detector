@@ -3,14 +3,7 @@ const g = require("./geometry");
 
 function createScanner(x, y, width, velocity, start, end, hasDetected, height) {
     return {
-        x,
-        y,
-        width,
-        velocity,
-        start,
-        end,
-        hasDetected,
-        height,
+        x, y, width, velocity, start, end, hasDetected, height,
     }
 }
 
@@ -22,13 +15,13 @@ function drawScanner(s) {
 function updateHorizontalScanner(s, p1, p2) {
     s.x += s.velocity;
     s.velocity = g.changeDirection(s.x, s.width, s.start, s.end, s.velocity);
-    s.hasDetected = g.isOverlapingParticles(s.x, s.width, p1.start, p1.width, p2.start, p2.width);
+    s.hasDetected = g.isOverlapingParticles(s.x, s.width, p1.x, p1.width, p2.x, p2.width);
 }
 
 function updateVerticalScanner(s, p3) {
     s.y += s.velocity;
     s.velocity = g.changeDirection(s.y, s.height, s.start, s.end, s.velocity);
-    s.hasDetected = g.detectOverlap(s.y, s.height, p3.start, p3.height);
+    s.hasDetected = g.detectOverlap(s.y, s.height, p3.y, p3.height);
 }
 
 module.exports = {

@@ -22,9 +22,9 @@ function setup() {
     world.s2 = s.createScanner(world.WIDTH / 2, 0, 40, 4, world.WIDTH / 2, world.WIDTH, false, world.HEIGHT);
     world.s3 = s.createScanner(0, 0, world.WIDTH, 3, 0, world.HEIGHT, false, 40);
 
-    world.p1 = p.createParticle(300, 100, world.HEIGHT);
-    world.p2 = p.createParticle(500, 10, world.HEIGHT);
-    world.p3 = p.createParticle(200, world.WIDTH, 30);
+    world.p1 = p.createParticle(300, 0, 100, world.HEIGHT);
+    world.p2 = p.createParticle(500, 0, 10, world.HEIGHT);
+    world.p3 = p.createParticle(0, 200, world.WIDTH, 30);
 
     return world;
 }
@@ -39,9 +39,9 @@ function draw(world) {
     r.BeginDrawing()
     r.ClearBackground(r.BLACK);
 
-    p.drawVerticalParticle(world.p1);
-    p.drawVerticalParticle(world.p2);
-    p.drawHorizontalParticle(world.p3);
+    p.drawParticle(world.p1);
+    p.drawParticle(world.p2);
+    p.drawParticle(world.p3);
 
     s.drawScanner(world.s1);
     s.drawScanner(world.s2);
